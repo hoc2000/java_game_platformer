@@ -1,7 +1,10 @@
 package main;
 
-import entities.Player;
-import level.LevelManager;
+
+import gamestates.Gamestate;
+import gamestates.Menu;
+import gamestates.Playing;
+
 
 import java.awt.*;
 
@@ -12,12 +15,13 @@ public class Game implements Runnable {
     private GameWindow gameWindow;
     private final int FPS_SET = 120;
     private final int UPS_SET = 200;
-    //tao player
-    private Player player;
-    private LevelManager levelManager;
+    private Playing playing;
+    private Menu menu;
+
+
 
     public final static int TILES_DEFAULT_SIZE =32;
-    public final static float SCALE = 2.0f;
+    public final static float SCALE = 1.5f;
     public final static int TILES_IN_WIDTH = 26;
     public final static int TILES_IN_HEIGHT = 14;
     public final static int TILES_SIZE = (int)(TILES_DEFAULT_SIZE *SCALE); //kich thuoc 1 khoi nho(tiles)
@@ -39,23 +43,47 @@ public class Game implements Runnable {
     }
     //thanh phan can khoi tao class
     public void init_Classes(){
-        levelManager = new LevelManager(this);
-        player = new Player(100, 200, (int) (64 * SCALE), (int) (40 * SCALE));
-        player.loadlvlData(levelManager.getcurrentLevel().getLevelData());
-        }
+        menu = new Menu(this);
+        playing = new Playing(this);
+
+
+    }
 
     private void startGameLoop() {
         Thread gameloopThread = new Thread(this);
         gameloopThread.start();//tao 1 thread moi va dong thoi run
     }
     public void update(){
-        player.update();
-        levelManager.update();
+
+        switch (Gamestate.state){
+            case MENU:
+                menu.update();
+
+                break;
+            case PLAYING:
+                playing.update();
+
+                break;
+            case OPTIONS:
+            case QUIT:
+            default:
+                System.exit(0);
+                break;
+        }
     }
 
     public void render(Graphics g){
-        levelManager.draw(g);
-        player.renderPlayer(g);
+        switch (Gamestate.state){
+            case MENU:
+                menu.draw(g);
+                break;
+            case PLAYING:
+                playing.draw(g);
+
+                break;
+            default:
+                break;
+        }
     }
     @Override
     public void run() {
@@ -98,11 +126,19 @@ public class Game implements Runnable {
         }
 
     }
-    public Player getPlayer(){
-        return player;
-    }
 
     public void widowFocusLost(){
-        player.StopWhenLostFocusPos();
+        if (Gamestate.state == Gamestate.PLAYING) {
+            playing.getPlayer().StopWhenLostFocusPos();
+        }
+
+    }
+    public Menu getMenu(){
+        return menu;
+    }
+
+    public Playing getPlaying(){
+        return playing;
+
     }
 }
