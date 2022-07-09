@@ -35,7 +35,7 @@ public class Game implements Runnable {
         //tao panel
         gamePanel = new GamePanel(this);
         gameWindow = new GameWindow(gamePanel);
-        gamePanel.setFocusable(true);
+        gamePanel.setFocusable(true); // focus vao player move
         gamePanel.requestFocus();
         //chay loop
         startGameLoop();
@@ -119,7 +119,7 @@ public class Game implements Runnable {
             }
             if (System.currentTimeMillis() - lastCheck >= 1000) {
                 lastCheck = System.currentTimeMillis();
-                System.out.println("FPS: " + frames+" | UPS: " +updates);
+//                System.out.println("FPS: " + frames+" | UPS: " +updates);
                 frames = 0;
                 updates = 0;
             }

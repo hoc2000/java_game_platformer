@@ -54,14 +54,6 @@ public class Player extends SuperEntity {
         updatetAnimationTick();
         setAnimation();
     }
-
-    public void renderPlayer(Graphics g, int lvlOffset) {
-        g.drawImage(animation[playerAction][aniIndex],(int)(hitBox.x-xDrawOffset) - lvlOffset,  (int)(hitBox.y- yDrawOffset), width, height, null);//dat vi tri cho anh
-        //drawHitBox(g);
-    }
-
-
-    //cac update cho player
     private void updatetAnimationTick() {
         aniTick++;
         if (aniTick >= aniSpeed) {
@@ -73,6 +65,14 @@ public class Player extends SuperEntity {
             }
         }
     }
+    public void renderPlayer(Graphics g, int lvlOffset) {
+        g.drawImage(animation[playerAction][aniIndex],(int)(hitBox.x-xDrawOffset) - lvlOffset,  (int)(hitBox.y- yDrawOffset), width, height, null);//dat vi tri cho anh
+        //drawHitBox(g);
+    }
+
+
+    //cac update cho player
+
     //chuyen đổi các animation khác nhau khoonng bị vấp khi reset aniTick
     private void setAnimation() {
         int startAni = playerAction;
@@ -172,6 +172,8 @@ public class Player extends SuperEntity {
         BufferedImage img = LoadSave.GetSpriteAtlas(LoadSave.PLAYER_ATLAS);
 
         animation = new BufferedImage[9][6];
+//        animation = new BufferedImage[4][8];
+
         //truyen tung anh
         for (int j = 0; j < animation.length; j++)// length cua row
             //length cua column

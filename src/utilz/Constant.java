@@ -3,7 +3,36 @@ package utilz;
 import main.Game;
 
 public class Constant {
+    public static class EnemyConstants{
+        public static final int SNAKE = 0;
+        public static final int IDLE = 0;
+        public static final int RUNNING = 2;
+        public static final int ATTACK = 3;
+        public static final int DEAD = 4;
 
+        public static final int SNAKE_WIDTH_DEFAULT = 32;
+        public static final int SNAKE_HEIGHT_DEFAULT = 32;
+
+        public static final int SNAKE_WIDTH = (int) (SNAKE_WIDTH_DEFAULT*Game.SCALE*1.5);
+        public static final int SNAKE_HEIGHT = (int)(SNAKE_HEIGHT_DEFAULT*Game.SCALE*1.5);
+
+        public static int GetSpriteAmount( int enemy_state){
+            return switch (enemy_state) {
+                case IDLE -> 10;
+                case RUNNING -> 6;
+                case ATTACK -> 7;
+                case DEAD -> 5;
+                default -> 0;
+            };
+        }
+    }
+    public static class Environment{
+        public static final int BIG_CLOUD_WIDTH_DEFAULT = 448;
+        public static final int BIG_CLOUD_HEIGHT_DEFAULT = 101;
+
+        public static final int BIG_CLOUD_WIDTH = (int) (BIG_CLOUD_WIDTH_DEFAULT* Game.SCALE);
+        public static final int BIG_CLOUD_HEIGHT = (int) (BIG_CLOUD_HEIGHT_DEFAULT* Game.SCALE);
+    }
     public static class UI {
         public static class Buttons {
             public static final int B_WIDTH_DEFAULT = 140;
@@ -42,7 +71,16 @@ public class Constant {
     }
 
     public static class PlayerConstants {
-        public static final int IDLE = 0;
+//        public static final int IDLE = 0;
+//        public static final int RUNNING = 1;
+//        public static final int JUMP = 2;
+//        public static final int FALLING = 3;
+//        public static final int GROUND = 4;
+//        public static final int HIT = 5;
+//        public static final int ATTACK_1 = 6;
+//        public static final int ATTACK_JUMP_1 = 7;
+//        public static final int ATTACK_JUMP_2 = 8;
+public static final int IDLE = 0;
         public static final int RUNNING = 1;
         public static final int JUMP = 2;
         public static final int FALLING = 3;

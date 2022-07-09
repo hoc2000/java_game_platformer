@@ -4,17 +4,21 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
 
+import entities.EnemyManager;
 import entities.Player;
 import level.LevelManager;
 import level.LevelManager;
 import main.Game;
 import ui.PauseOverlay;
 import utilz.LoadSave;
+import static utilz.Constant.Environment.*;
 
 public class Playing extends State implements Statemethods {
     private Player player;
     private LevelManager levelManager;
+    private EnemyManager enemyManager;
     private PauseOverlay pauseOverlay;
     private boolean paused = false;
 
@@ -25,13 +29,17 @@ public class Playing extends State implements Statemethods {
     private int maxTilesOffset = lvlTilesWide - Game.TILES_IN_WIDTH;
     private int maxLvlOffsetX = maxTilesOffset * Game.TILES_SIZE;
 
+    private BufferedImage backgroundImg, bigCloudImg;
     public Playing(Game game) {
         super(game);
         initClasses();
+        backgroundImg = LoadSave.GetSpriteAtlas(LoadSave.PLAYING_BG_IMG);
+//        bigCloudImg = LoadSave.GetSpriteAtlas(LoadSave.BIG_CLOUDS);
     }
 
     private void initClasses() {
         levelManager = new LevelManager(game);
+        enemyManager = new EnemyManager(this);
         player = new Player(200, 200, (int) (64 * Game.SCALE), (int) (40 * Game.SCALE));
         player.loadlvlData(levelManager.getcurrentLevel().getLevelData());
         pauseOverlay = new PauseOverlay(this);
@@ -42,6 +50,7 @@ public class Playing extends State implements Statemethods {
         if (!paused) {
             levelManager.update();
             player.update();
+            enemyManager.update();
             checkCloseToBorder();
         } else {
             pauseOverlay.update();
@@ -66,14 +75,25 @@ public class Playing extends State implements Statemethods {
 
     @Override
     public void draw(Graphics g) {
+        g.drawImage(backgroundImg, 0,0,Game.GAME_WIDTH, Game.GAME_HEIGHT,null);
+        drawClouds(g);
+
         levelManager.draw(g, xLvlOffset);
         player.renderPlayer(g,xLvlOffset);
+        enemyManager.draw(g,xLvlOffset);
 
         if (paused) {
             g.setColor(new Color(0, 0, 0, 150));
             g.fillRect(0, 0, Game.GAME_WIDTH, Game.GAME_HEIGHT);
             pauseOverlay.draw(g);
         }
+    }
+
+    private void drawClouds(Graphics g) {
+        for(int i=0; i<3; i++){
+            g.drawImage(bigCloudImg, i * BIG_CLOUD_WIDTH,(int)(204*Game.SCALE),BIG_CLOUD_WIDTH, BIG_CLOUD_HEIGHT, null);
+        }
+
     }
 
     @Override

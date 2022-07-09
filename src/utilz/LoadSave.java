@@ -1,6 +1,7 @@
 package utilz;
 
 import com.sun.security.jgss.GSSUtil;
+import entities.Snake;
 import main.Game;
 
 import javax.imageio.ImageIO;
@@ -8,7 +9,10 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Objects;
+
+import static utilz.Constant.EnemyConstants.*;
 
 public class LoadSave {
 
@@ -21,10 +25,28 @@ public class LoadSave {
     public static final String SOUND_BUTTONS = "sound_button.png";
     public static final String URM_BUTTONS = "urm_buttons.png";
     public static final String VOLUME_BUTTONS = "volume_buttons.png";
-    public static final String MENU_BACKGROUND_IMG = "background_menu.png";
+    public static final String MENU_BACKGROUND_IMG = "background.jpg";
     public static final String PAUSE_BACKGROUND = "pause_menu.png";
+    public static final String PLAYING_BG_IMG = "playing.jpg";
+//    public static final String BIG_CLOUDS ="big_clouds.png";
+    public static final String ENEMY_SPRITES ="snake.png";
+    public static ArrayList<Snake> getSnakes(){
+        BufferedImage img = GetSpriteAtlas(LEVEL_ONE_STRUCTURE);
+        ArrayList<Snake> list = new ArrayList<>();
+        for (int j = 0; j < img.getHeight(); j++) {
+            for (int i = 0; i < img.getWidth(); i++) {
+                Color color = new Color(img.getRGB(i, j));
+                int value = color.getGreen();
+                if (value == SNAKE) {
+                    //lay trong khaong ở bound của red(khoảng 45)
+                    list.add(new Snake(i*Game.TILES_SIZE, j*Game.TILES_SIZE, SNAKE_WIDTH, SNAKE_HEIGHT));}
 
+            }
 
+        }
+        return list;
+
+    }
     public static BufferedImage GetSpriteAtlas(String fileName) {
         BufferedImage img = null;
         InputStream is = LoadSave.class.getResourceAsStream("/" + fileName);
