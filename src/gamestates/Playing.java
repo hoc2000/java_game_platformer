@@ -50,7 +50,7 @@ public class Playing extends State implements Statemethods {
         if (!paused) {
             levelManager.update();
             player.update();
-            enemyManager.update();
+            enemyManager.update(levelManager.getcurrentLevel().getLevelData(), player);
             checkCloseToBorder();
         } else {
             pauseOverlay.update();
@@ -76,7 +76,7 @@ public class Playing extends State implements Statemethods {
     @Override
     public void draw(Graphics g) {
         g.drawImage(backgroundImg, 0,0,Game.GAME_WIDTH, Game.GAME_HEIGHT,null);
-        drawClouds(g);
+//        drawClouds(g);
 
         levelManager.draw(g, xLvlOffset);
         player.renderPlayer(g,xLvlOffset);

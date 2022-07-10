@@ -67,7 +67,7 @@ public class Player extends SuperEntity {
     }
     public void renderPlayer(Graphics g, int lvlOffset) {
         g.drawImage(animation[playerAction][aniIndex],(int)(hitBox.x-xDrawOffset) - lvlOffset,  (int)(hitBox.y- yDrawOffset), width, height, null);//dat vi tri cho anh
-        //drawHitBox(g);
+        drawHitBox(g, lvlOffset);
     }
 
 

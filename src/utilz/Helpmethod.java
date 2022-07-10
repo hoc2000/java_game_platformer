@@ -4,14 +4,13 @@ import main.Game;
 
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
-
+import static utilz.Constant.Directions.*;
 public class Helpmethod {
     public static boolean CanMoveHere(float x, float y, float width, float height, int[][] lvlData) {
         if (!IsSolid(x, y, lvlData)) {
             if (!IsSolid(x + width, y + height, lvlData))
                 if (!IsSolid(x + width, y, lvlData))
-                    if (!IsSolid(x, y + height, lvlData))
-                        return true;
+                    return !IsSolid(x, y + height, lvlData);
         }
         return false;
 
@@ -68,6 +67,11 @@ public class Helpmethod {
             if (!IsSolid(hitBox.x + hitBox.width, hitBox.y  + hitBox.height + 1,lvlData ))
                 return false;
         return true;
+    }
+    public static boolean IsFloor(Rectangle2D.Float hitbox, float xSpeed, int[][] lvlData, int type) {
+        if(type==LEFT)
+            return IsSolid(hitbox.x + xSpeed, hitbox.y + hitbox.height + 1, lvlData);
+        return IsSolid(hitbox.x + xSpeed+ hitbox.width, hitbox.y + hitbox.height + 1, lvlData);
     }
 
 }

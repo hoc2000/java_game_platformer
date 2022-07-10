@@ -21,7 +21,7 @@ public abstract class SuperEntity {
         hitBox = new Rectangle2D.Float(x,y,width, height);
     }
 
-    protected void drawHitBox(Graphics g){
+    protected void drawHitBox(Graphics g, int x){
         //debug hitbox
         g.setColor(Color.PINK);
         g.drawRect((int)hitBox.x,(int) hitBox.y, (int)hitBox.width, (int)hitBox.height);

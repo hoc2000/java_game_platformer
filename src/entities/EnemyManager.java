@@ -26,9 +26,9 @@ public class EnemyManager {
         System.out.println(snakes.size());
     }
 
-    public void update(){
+    public void update(int [][] lvlData, Player player){
         for(Snake n: snakes){
-            n.update();
+            n.update(lvlData, player);
         }
     }
     public void draw(Graphics g, int x){
@@ -37,8 +37,9 @@ public class EnemyManager {
 
     private void drawSnakes(Graphics g, int x) {
         for(Snake n: snakes){
+            n.drawHitBox(g,x);
             g.drawImage(snakeArr[n.getEnemyState()][n.getAniIndex()],
-                    (int) n.getHitBox().x-x, (int) n.getHitBox().y-25, SNAKE_WIDTH, SNAKE_HEIGHT, null);
+                    (int) n.getHitBox().x-x, (int) n.getHitBox().y-42, SNAKE_WIDTH, SNAKE_HEIGHT, null);
         }
     }
 
@@ -51,4 +52,5 @@ public class EnemyManager {
             }
         }
     }
+
 }

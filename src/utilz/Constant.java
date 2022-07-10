@@ -15,7 +15,8 @@ public class Constant {
 
         public static final int SNAKE_WIDTH = (int) (SNAKE_WIDTH_DEFAULT*Game.SCALE*1.5);
         public static final int SNAKE_HEIGHT = (int)(SNAKE_HEIGHT_DEFAULT*Game.SCALE*1.5);
-
+        public static final int SNAKE_DRAWOFFSET_X = (int) (26*Game.SCALE);
+        public static final int SNAKE_DRAWOFFSET_Y = (int) (9*Game.SCALE); // img sprite distance
         public static int GetSpriteAmount( int enemy_state){
             return switch (enemy_state) {
                 case IDLE -> 10;
