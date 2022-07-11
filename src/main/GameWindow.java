@@ -13,6 +13,7 @@ public class GameWindow {
         jframe.add(gamePanel);
         jframe.setResizable(false);//co dinh man hinh
         jframe.pack();
+        jframe.setLocationRelativeTo(null);
         jframe.setVisible(true);
         //cho window neu bi swtch thi thao tac giao dien khong bi giu nguyen
         jframe.addWindowFocusListener(new WindowFocusListener() {
