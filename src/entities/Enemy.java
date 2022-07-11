@@ -2,6 +2,9 @@ package entities;
 import gamestates.Playing;
 import main.Game;
 
+import java.awt.*;
+import java.awt.geom.Rectangle2D;
+
 import static utilz.Constant.EnemyConstants.*;
 import static utilz.Helpmethod.*;
 import static utilz.Constant.Directions.*;
@@ -15,9 +18,20 @@ public abstract class Enemy extends SuperEntity{
     private float walkSpeed = 0.06f*Game.SCALE;
     private int walkDir = LEFT;
     private float attackDistance = Game.TILES_SIZE;
+    private Rectangle2D.Float attackBox;
+    protected int maxHealth=5;
+    protected int currentHealth;
+    private boolean active = true;
+    private boolean attackCheck = false;
     public Enemy(float x, float y, int width, int height) {
         super(x, y, width, height);
         initHitBox(x,y,width,height);
+        initAttackBox();
+        currentHealth  = maxHealth;
+    }
+
+    private void initAttackBox() {
+        attackBox = new Rectangle2D.Float((int)x,(int)y, (int)(10* Game.SCALE), (int)(10*Game.SCALE));
     }
 
     private void updateAnimationTick(){
@@ -30,13 +44,27 @@ public abstract class Enemy extends SuperEntity{
                 if(enemyState==ATTACK){
                     enemyState = IDLE;
                 }
+                else if(enemyState==DEAD){
+                    active = false;
+                }
             }
         }
     }
     public void update(int [][] lvlData, Player player){
         updateMove(lvlData, player);
         updateAnimationTick();
+        updateAttackBox();
     }
+
+    private void updateAttackBox() {
+        if(walkDir==RIGHT){
+            attackBox.x = hitBox.x + hitBox.width + (int)(Game.SCALE);
+        }else if(walkDir==LEFT){
+            attackBox.x = hitBox.x+ (int)(Game.SCALE);
+        }
+        attackBox.y = hitBox.y + (int)(Game.SCALE*10);
+    }
+
     private void updateMove(int[][] lvlData, Player player) {
         if (firstUpdate) {
             if (!isEntityOnFloor(hitBox, lvlData))
@@ -59,7 +87,6 @@ public abstract class Enemy extends SuperEntity{
                     if (isPlayerInRange(player)) {
                         turnTowardsPlayer(player);
                         if (isPlayerCloseForAttack(player)) {
-                            System.out.println("Attack");
                             newState(ATTACK);
                         }
 
@@ -76,14 +103,39 @@ public abstract class Enemy extends SuperEntity{
                         }
                     changeWalkDir();
                 }
+                case ATTACK -> {
+                    if(aniIndex==0){
+                        attackCheck = false;
+                    }
+                    if(!attackCheck && aniIndex ==6){
+                        checkEnemyHit(player);
+                    }
+                    break;
+                }
             }
 
     }
 
+
     }
+    public void resetEnemy(){
+        hitBox.x = x;
+        hitBox.y = y;
+        firstUpdate = true;
+        currentHealth = maxHealth;
+        newState(IDLE);
+        active = true;
+        fallSpeed = 0;
+    }
+
+    private void checkEnemyHit( Player player) {
+            player.changeHealth();
+            attackCheck= true;
+    }
+
     private boolean isPlayerInRange(Player player) {
         int absValue = (int) Math.abs(player.hitBox.x - hitBox.x);
-        return absValue <= attackDistance * 3;
+        return absValue <= attackDistance * 2;
     }
     private void turnTowardsPlayer(Player player) {
         if(player.hitBox.x >hitBox.x){
@@ -96,7 +148,7 @@ public abstract class Enemy extends SuperEntity{
     }
     private boolean isPlayerCloseForAttack(Player player){
         int absValue = (int) Math.abs(player.hitBox.x - hitBox.x);
-            return absValue <= attackDistance;
+            return absValue <= attackDistance-20;
 
     }
     private void changeWalkDir() {
@@ -106,15 +158,37 @@ public abstract class Enemy extends SuperEntity{
             walkDir = LEFT;
 
     }
+
     private void newState(int enemyState){
         this.enemyState = enemyState;
         aniTick = 0;
         aniIndex = 0;
+    }
+    public int flipX(){
+        if(walkDir==RIGHT){
+            return width;
+        }else return 0;
+    }
+    public int flipW(){
+        if(walkDir==RIGHT)
+            return -1;
+        else return 1;
+    }
+    public void drawAttackBox(Graphics g, int xLvlOffset){
+        g.setColor(Color.RED);
+        g.drawRect((int)attackBox.x -xLvlOffset, (int) attackBox.y,(int) attackBox.width,(int) attackBox.height);
+    }
+    public void hurt(){
+        currentHealth = 0;
+        newState(DEAD);
     }
     public int getAniIndex(){
         return aniIndex;
     }
     public int getEnemyState(){
         return enemyState;
+    }
+    public boolean isActive(){
+        return  active;
     }
 }

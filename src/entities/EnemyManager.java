@@ -4,6 +4,7 @@ import gamestates.Playing;
 import utilz.LoadSave;
 
 import java.awt.*;
+import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Objects;
@@ -23,12 +24,13 @@ public class EnemyManager {
 
     private void addEnemies() {
         snakes = LoadSave.getSnakes();
-        System.out.println(snakes.size());
     }
 
     public void update(int [][] lvlData, Player player){
         for(Snake n: snakes){
-            n.update(lvlData, player);
+            if(n.isActive()){
+                n.update(lvlData, player);
+            }
         }
     }
     public void draw(Graphics g, int x){
@@ -37,9 +39,12 @@ public class EnemyManager {
 
     private void drawSnakes(Graphics g, int x) {
         for(Snake n: snakes){
-            n.drawHitBox(g,x);
-            g.drawImage(snakeArr[n.getEnemyState()][n.getAniIndex()],
-                    (int) n.getHitBox().x-x, (int) n.getHitBox().y-42, SNAKE_WIDTH, SNAKE_HEIGHT, null);
+           if(n.isActive()){
+               n.drawHitBox(g,x);
+               g.drawImage(snakeArr[n.getEnemyState()][n.getAniIndex()],
+                       (int) n.getHitBox().x-x+ n.flipX(), (int) n.getHitBox().y-42, SNAKE_WIDTH *n.flipW(), SNAKE_HEIGHT, null);
+               n.drawAttackBox(g,x);
+           }
         }
     }
 
@@ -53,4 +58,21 @@ public class EnemyManager {
         }
     }
 
+
+    //check enemy hit
+    public void checkEnemyHit(Rectangle2D.Float attackBox){
+        for(Snake s: snakes){
+           if(s.isActive()){
+               if(attackBox.intersects(s.getHitBox())){
+                   s.hurt();
+               }
+           }
+        }
+    }
+
+    public void resetAllEnemies() {
+        for( Snake n : snakes){
+            n.resetEnemy();
+        }
+    }
 }

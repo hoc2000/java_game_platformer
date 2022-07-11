@@ -16,7 +16,7 @@ import static utilz.Constant.EnemyConstants.*;
 
 public class LoadSave {
 
-    public static final String PLAYER_ATLAS = "player_sprites.png";
+    public static final String PLAYER_ATLAS = "player.png";
     public static final String LEVEL_ATLAS = "outside_sprites.png";
     //public static final String LEVEL_ONE_STRUCTURE = "level_one_data.png";
     public static final String LEVEL_ONE_STRUCTURE = "level_one_data_long.png";
@@ -30,6 +30,7 @@ public class LoadSave {
     public static final String PLAYING_BG_IMG = "playing.jpg";
 //    public static final String BIG_CLOUDS ="big_clouds.png";
     public static final String ENEMY_SPRITES ="snake.png";
+    public static final String HEART_HEALTH = "heart.png";
     public static ArrayList<Snake> getSnakes(){
         BufferedImage img = GetSpriteAtlas(LEVEL_ONE_STRUCTURE);
         ArrayList<Snake> list = new ArrayList<>();

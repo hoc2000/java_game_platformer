@@ -1,9 +1,9 @@
 package entities;
 
+import gamestates.Playing;
 import main.Game;
 import utilz.*;
 import utilz.Helpmethod.*;
-
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
@@ -37,23 +37,69 @@ public class Player extends SuperEntity {
     private float fallSpeedAfterCollision = 0.5f * Game.SCALE;
     private boolean inAir = false;
 
+    private int statusBarX = (int) (20 * Game.SCALE);
+    private int statusBarY = (int) (10 * Game.SCALE);
+    private int maxHealth = 3;
+    private int currentHealth = maxHealth;
+    private int checkDamage = 3;
+    private int heartWidth = (int) (30 * Game.SCALE);
+    private int heartHeight = (int) (30 * Game.SCALE);
 
+    //attack box
+    private Rectangle2D.Float attackBox;
+    private int flipX = 0;
+    private int flipW = 1;
+
+    private  boolean attackCheck = false;
+    private Playing playing;
     //player constructor playable here
-    public Player(float x, float y, int width, int height) {
+    public Player(float x, float y, int width, int height, Playing playing) {
         super(x, y, width, height);
+        this.playing =playing;
         LoadAnimation();
-        initHitBox(x,y,(int)(20*Game.SCALE),(int)(27*Game.SCALE));
+        initHitBox(x,y,(int)(22*Game.SCALE),(int)(30*Game.SCALE));
+        initAttackBox();
 
+    }
 
+    private void initAttackBox() {
+        attackBox = new Rectangle2D.Float(x, y, (int)(20*Game.SCALE), (int)(20*Game.SCALE));
     }
 
 
     public void update() {
+        if(currentHealth<=0){
+            playing.setGameOver(true);
+            return ;
+        }
         updatePostion();
+        updateAttackBox();
         //updateHitBox();
+        if(attacking){
+            checkAttack();
+        }
         updatetAnimationTick();
         setAnimation();
     }
+
+    private void checkAttack() {
+        if(attackCheck || aniIndex!=1){
+            return ;
+        }
+        attackCheck = true;
+        playing.checkEnemyHit(attackBox);
+    }
+
+
+    private void updateAttackBox() {
+        if(right){
+            attackBox.x = hitBox.x + hitBox.width + (int)(Game.SCALE*10);
+        }else if(left){
+            attackBox.x = hitBox.x - hitBox.width - (int)(Game.SCALE*10);
+        }
+        attackBox.y = hitBox.y + (int)(Game.SCALE*10);
+    }
+
     private void updatetAnimationTick() {
         aniTick++;
         if (aniTick >= aniSpeed) {
@@ -62,12 +108,27 @@ public class Player extends SuperEntity {
             if (aniIndex >= GetSpriteAmount(playerAction)) {
                 aniIndex = 0;
                 attacking = false;// khong bi lap lai don attack
+                attackCheck=false;
             }
         }
     }
     public void renderPlayer(Graphics g, int lvlOffset) {
-        g.drawImage(animation[playerAction][aniIndex],(int)(hitBox.x-xDrawOffset) - lvlOffset,  (int)(hitBox.y- yDrawOffset), width, height, null);//dat vi tri cho anh
+        g.drawImage(animation[playerAction][aniIndex],(int)(hitBox.x-xDrawOffset) - lvlOffset + flipX,  (int)(hitBox.y- yDrawOffset), width*flipW, height, null);//dat vi tri cho anh
         drawHitBox(g, lvlOffset);
+        drawAttackBox(g,lvlOffset);
+        drawHealthBar(g);
+    }
+
+    private void drawAttackBox(Graphics g, int lvlOffset) {
+        g.setColor(Color.RED);
+        g.drawRect((int)attackBox.x-lvlOffset -5,(int) attackBox.y+lvlOffset,(int) attackBox.width, (int)attackBox.height);
+    }
+
+    private void drawHealthBar(Graphics g) {
+        BufferedImage img   =  LoadSave.GetSpriteAtlas(LoadSave.HEART_HEALTH);
+        for(int i=0; i< currentHealth; i++){
+            g.drawImage(img, statusBarX*i, statusBarY, heartWidth, heartHeight, null);
+        }
     }
 
 
@@ -89,7 +150,7 @@ public class Player extends SuperEntity {
         }
 
         if (attacking) {
-            playerAction = ATTACK_1;
+            playerAction = ATTACK;
         }
         //doi animation
         if (startAni != playerAction) {
@@ -115,9 +176,13 @@ public class Player extends SuperEntity {
         float xSpeed = 0;
         if (left) {
             xSpeed -= playerspeed;
+            flipX = width;
+            flipW = -1;
         }
         if (right) {
             xSpeed += playerspeed;
+            flipX = 0;
+            flipW = 1;
         }
 
         if (!inAir){
@@ -168,17 +233,33 @@ public class Player extends SuperEntity {
         }
     }
 
+    // change health when attack
+    public void changeHealth(){
+        checkDamage--;
+        if(checkDamage<=0){
+            currentHealth --;
+            checkDamage=3;
+
+            //gameOver();
+            if(currentHealth<=0){
+                //GameOver();
+            }
+            else if(currentHealth>= maxHealth){
+                currentHealth = maxHealth;
+            }
+        }
+    }
     private void LoadAnimation() {
         BufferedImage img = LoadSave.GetSpriteAtlas(LoadSave.PLAYER_ATLAS);
 
-        animation = new BufferedImage[9][6];
+        animation = new BufferedImage[16][8];
 //        animation = new BufferedImage[4][8];
 
         //truyen tung anh
         for (int j = 0; j < animation.length; j++)// length cua row
             //length cua column
             for (int i = 0; i < Objects.requireNonNull(animation[j]).length; i++) {
-                animation[j][i] = img.getSubimage(i * 64, j * 40, 64, 40);
+                animation[j][i] = img.getSubimage(39*i, j*32, 40, 32);
 
             }
     }
@@ -233,5 +314,27 @@ public class Player extends SuperEntity {
     }
     public void setJump (boolean jump){
         this.jump = jump;
+    }
+    public void resetDirBooleans() {
+        left = false;
+        right = false;
+        up = false;
+        down = false;
+    }
+    public void resetAll() {
+        resetDirBooleans();
+        inAir= false;
+        attacking = false;
+        moving = false;
+        playerAction = IDLE;
+        currentHealth  = maxHealth;
+
+        //reset hitbox
+        hitBox.x = x;
+        hitBox.y = y;
+
+        if(!isEntityOnFloor(hitBox, lvlData)){
+            inAir = true;
+        }
     }
 }
