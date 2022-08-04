@@ -25,7 +25,7 @@ public abstract class Enemy extends SuperEntity{
     private boolean attackCheck = false;
     public Enemy(float x, float y, int width, int height) {
         super(x, y, width, height);
-        initHitBox(x,y,width,height);
+        initHitBox(x,y,(int)(32* Game.SCALE),(int)(19*Game.SCALE));
         initAttackBox();
         currentHealth  = maxHealth;
     }
