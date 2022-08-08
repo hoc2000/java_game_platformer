@@ -1,18 +1,20 @@
 # Java Game - 2D Platformer Game
 ## Description
 A simple action game which can move character (run, jump, attack) between point in the environment 
+![menu](./res//menuGame.png)
+![view](./res/view.png)
+
 ### Folder Structure
 .
-    ├── .idea                   
-    ├── res                     # Image
-    ├── src                     # Source files 
-    │   ├── entities            
-    │   ├── inputs              
-    │   ├── gamestates
-    │   ├── main                # Main class
-    │   ├── ui 
-    │   └── utilz     
-    └── README.md
+├── .idea                   
+├── res                     
+│   ├── entities            
+│   ├── inputs              
+│   ├── gamestates
+│   ├── main               
+│   ├── ui 
+│   └── utilz     
+└── README.md
 
 
 ----
