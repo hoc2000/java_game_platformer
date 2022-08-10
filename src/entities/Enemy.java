@@ -128,6 +128,7 @@ public abstract class Enemy extends SuperEntity{
         fallSpeed = 0;
     }
 
+    // check when enemy hit the player
     private void checkEnemyHit( Player player) {
             player.changeHealth();
             attackCheck= true;
@@ -178,6 +179,8 @@ public abstract class Enemy extends SuperEntity{
         g.setColor(Color.RED);
         g.drawRect((int)attackBox.x -xLvlOffset, (int) attackBox.y,(int) attackBox.width,(int) attackBox.height);
     }
+
+    // enemy damage
     public void hurt(){
         currentHealth = 0;
         newState(DEAD);

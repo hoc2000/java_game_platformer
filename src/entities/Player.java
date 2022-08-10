@@ -33,15 +33,15 @@ public class Player extends SuperEntity {
     private float yDrawOffset = 28 * Game.SCALE;
     private float airSpeed = 0f;
     private float gravity = 0.04f * Game.SCALE;
-    private float jumpSpeed = -2.25f * Game.SCALE;
+    private float jumpSpeed = -3f * Game.SCALE;
     private float fallSpeedAfterCollision = 0.5f * Game.SCALE;
     private boolean inAir = false;
 
     private int statusBarX = (int) (20 * Game.SCALE);
     private int statusBarY = (int) (10 * Game.SCALE);
-    private int maxHealth = 3;
+    private int maxHealth = 3; // 3 hearts
     private int currentHealth = maxHealth;
-    private int checkDamage = 3;
+    private int checkDamage = 3; // the damage of snake's bite
     private int heartWidth = (int) (30 * Game.SCALE);
     private int heartHeight = (int) (30 * Game.SCALE);
 
@@ -87,6 +87,7 @@ public class Player extends SuperEntity {
             return ;
         }
         attackCheck = true;
+        // check when enemy hit player
         playing.checkEnemyHit(attackBox);
     }
 
@@ -236,7 +237,8 @@ public class Player extends SuperEntity {
         checkDamage--;
         if(checkDamage<=0){
             currentHealth --;
-            checkDamage=3;}
+            checkDamage=3; // snake hit 3 times -> player will lose 1 heart
+        }
         else if(currentHealth>= maxHealth){
                 currentHealth = maxHealth;
             }
