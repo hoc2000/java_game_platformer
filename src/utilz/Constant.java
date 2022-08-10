@@ -15,8 +15,6 @@ public class Constant {
 
         public static final int SNAKE_WIDTH = (int) (SNAKE_WIDTH_DEFAULT*Game.SCALE*1.5);
         public static final int SNAKE_HEIGHT = (int)(SNAKE_HEIGHT_DEFAULT*Game.SCALE*1.5);
-        public static final int SNAKE_DRAWOFFSET_X = (int) (26*Game.SCALE);
-        public static final int SNAKE_DRAWOFFSET_Y = (int) (9*Game.SCALE); // img sprite distance
         public static int GetSpriteAmount( int enemy_state){
             return switch (enemy_state) {
                 case IDLE -> 10;
@@ -72,29 +70,18 @@ public class Constant {
     }
 
     public static class PlayerConstants {
-//        public static final int IDLE = 0;
-//        public static final int RUNNING = 1;
-//        public static final int JUMP = 2;
-//        public static final int FALLING = 3;
-//        public static final int GROUND = 4;
-//        public static final int HIT = 5;
-//        public static final int ATTACK_1 = 6;
-//        public static final int ATTACK_JUMP_1 = 7;
-//        public static final int ATTACK_JUMP_2 = 8;
-public static final int IDLE = 10;
+        public static final int IDLE = 10;
         public static final int RUNNING = 1;
         public static final int JUMP = 0;
         public static final int FALLING = 8;
-//        public static final int HIT = 3;
         public static final int ATTACK = 2;
         public final static int DEAD =6;
 
         public static int GetSpriteAmount(int player_action) {
             return switch (player_action) {
-                case RUNNING, ATTACK -> 5;
+                case RUNNING, ATTACK, DEAD -> 5;
                 case IDLE, JUMP -> 1;
                 case FALLING -> 3;
-                case DEAD -> 5;
                 default -> 0;
             };
         }

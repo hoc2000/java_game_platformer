@@ -15,7 +15,6 @@ public class EnemyManager {
     private Playing playing;
     private BufferedImage[][] snakeArr;
     private ArrayList<Enemy> Enemies = new ArrayList<>();
-
     public EnemyManager(Playing playing){
         this.playing = playing;
         loadEnemyImgs();
@@ -27,11 +26,14 @@ public class EnemyManager {
     }
 
     public void update(int [][] lvlData, Player player){
+        boolean isAnyActive = false;
         for(Enemy n: Enemies){
             if(n.isActive()){
+                isAnyActive = true;
                 n.update(lvlData, player);
             }
         }
+        if(!isAnyActive) playing.setGameWin(true);
     }
     public void draw(Graphics g, int x){
         drawSnakes(g,x);

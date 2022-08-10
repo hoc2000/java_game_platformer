@@ -29,7 +29,7 @@ public class Player extends SuperEntity {
     private boolean left, up, right, down, jump;
     private float playerspeed = 1.0f * Game.SCALE;
     private int[][] lvlData;
-    private float xDrawOffset = 21 * Game.SCALE;
+    private float xDrawOffset = 21 * Game.SCALE; // player to corner off set
     private float yDrawOffset = 4 * Game.SCALE;
     private float airSpeed = 0f;
     private float gravity = 0.04f * Game.SCALE;
@@ -238,22 +238,15 @@ public class Player extends SuperEntity {
         checkDamage--;
         if(checkDamage<=0){
             currentHealth --;
-            checkDamage=3;
-
-            //gameOver();
-            if(currentHealth<=0){
-                //GameOver();
-            }
-            else if(currentHealth>= maxHealth){
+            checkDamage=3;}
+        else if(currentHealth>= maxHealth){
                 currentHealth = maxHealth;
             }
-        }
     }
     private void LoadAnimation() {
         BufferedImage img = LoadSave.GetSpriteAtlas(LoadSave.PLAYER_ATLAS);
 
         animation = new BufferedImage[16][8];
-//        animation = new BufferedImage[4][8];
 
         //truyen tung anh
         for (int j = 0; j < animation.length; j++)// length cua row
