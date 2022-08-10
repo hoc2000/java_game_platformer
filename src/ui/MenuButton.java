@@ -43,6 +43,7 @@ public class MenuButton {
 
     }
 
+    // when hover the button
     public void update (){
         index = 0;
         if (mouseOver) index = 1;

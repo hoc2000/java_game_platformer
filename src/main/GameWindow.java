@@ -21,7 +21,7 @@ public class GameWindow {
             public void windowGainedFocus(WindowEvent e) {}
             @Override
             public void windowLostFocus(WindowEvent e) {
-                System.out.println("Focus Lost");
+//                System.out.println("Focus Lost");
                 gamePanel.getGame().widowFocusLost();
             }
         });

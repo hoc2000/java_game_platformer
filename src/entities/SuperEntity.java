@@ -24,7 +24,7 @@ public abstract class SuperEntity {
     protected void drawHitBox(Graphics g, int x){
         //debug hitbox
         g.setColor(Color.PINK);
-        g.drawRect((int)hitBox.x,(int) hitBox.y, (int)hitBox.width, (int)hitBox.height);
+        g.drawRect((int)hitBox.x-x,(int) hitBox.y, (int)hitBox.width, (int)hitBox.height);
     }
 
 

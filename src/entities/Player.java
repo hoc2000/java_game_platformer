@@ -29,8 +29,8 @@ public class Player extends SuperEntity {
     private boolean left, up, right, down, jump;
     private float playerspeed = 1.0f * Game.SCALE;
     private int[][] lvlData;
-    private float xDrawOffset = 21 * Game.SCALE; // player to corner off set
-    private float yDrawOffset = 4 * Game.SCALE;
+    private float xDrawOffset = 28 * Game.SCALE; // player to corner off set
+    private float yDrawOffset = 28 * Game.SCALE;
     private float airSpeed = 0f;
     private float gravity = 0.04f * Game.SCALE;
     private float jumpSpeed = -2.25f * Game.SCALE;
@@ -74,7 +74,7 @@ public class Player extends SuperEntity {
         }
         updatePostion();
         updateAttackBox();
-        //updateHitBox();
+//        updateHitBox();
         if(attacking){
             checkAttack();
         }
@@ -121,7 +121,7 @@ public class Player extends SuperEntity {
 
     private void drawAttackBox(Graphics g, int lvlOffset) {
         g.setColor(Color.RED);
-        g.drawRect((int)attackBox.x-lvlOffset -5,(int) attackBox.y+lvlOffset,(int) attackBox.width, (int)attackBox.height);
+        g.drawRect((int)attackBox.x-lvlOffset,(int) attackBox.y,(int) attackBox.width, (int)attackBox.height);
     }
 
     private void drawHealthBar(Graphics g) {
@@ -167,8 +167,6 @@ public class Player extends SuperEntity {
         moving = false;
         if (jump)
             jump();
-        //if (!left && !right && !inAir)
-        //return;
         if (!inAir)
             if ((!left && !right) && (right && left))
                 return;

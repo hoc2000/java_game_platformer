@@ -8,9 +8,11 @@
     - [Installation](#installation)
     - [Contributing](#contributing)
 - [About this project](#about-project)
+    - [UML](#uml)
     - [Game Thread](game-thread)
     - [Character Animations](#character-animation)
     - [Collision Detection](#collision)
+    - [Game State](#game-state)
 
 ## Description <a name="description"></a>
 A simple action game which can move character (run, jump, attack) between point in the environment 
@@ -40,6 +42,7 @@ A simple action game which can move character (run, jump, attack) between point 
 ### 2. Dependencies <a name="dependencies"></a>
 - Programming language: Java
 - JDK: 17
+- Development environment: Intellij IDEA
 ### 3. Installation <a name="installation"></a>
 ```
 # Clone this repository
@@ -54,7 +57,9 @@ $ git clone https://github.com/hoc2000/java_game_platformer.git
 5. Create a new Pull Request
 
 ## About this project <a name="about-project"></a>
-### a. Game Thread <a name="game-thread"></a>
+### a. UML <a name="uml"></a>
+![uml](./uml.png)
+### b. Game Thread <a name="game-thread"></a>
 - ```Game loop```: A game loop runs continuously during gameplay. Each turn of the loop, it processes user input without blocking, updates the game state, and renders the game. 
 - ```FPS``` (render/frames):
     - Draw the games scene, player, enemies,..
@@ -65,5 +70,6 @@ $ git clone https://github.com/hoc2000/java_game_platformer.git
     - ``` repaint```: call method paintComponent()
 - Time system: We used nano time ```System.nanoTime()``` (returns the current value of the running JVM's high-resolution time source in nanoseconds) to calculate the time restriction. We used "Delta/Accumulator" method
 (Read more in [Understanding Delta Time](https://drewcampbell92.medium.com/understanding-delta-time-b53bf4781a03))
-### b. Character Animations <a name="character-animation"></a>
-### c. Collision Detection <a name="collision"></a>
+### c. Character Animations <a name="character-animation"></a>
+### d. Collision Detection <a name="collision"></a>
+### e. Game State <a name="game-state"></a>

@@ -28,6 +28,8 @@ public class LoadSave {
     public static final String PLAYING_BG_IMG = "playing.jpg";
     public static final String ENEMY_SPRITES ="snake.png";
     public static final String HEART_HEALTH = "heart.png";
+
+    // get snake position in map
     public static ArrayList<Enemy> getSnakes(){
         BufferedImage img = GetSpriteAtlas(LEVEL_ONE_STRUCTURE);
         ArrayList<Enemy> list = new ArrayList<>();
@@ -50,6 +52,8 @@ public class LoadSave {
         return list;
 
     }
+
+    // get image
     public static BufferedImage GetSpriteAtlas(String fileName) {
         BufferedImage img = null;
         InputStream is = LoadSave.class.getResourceAsStream("/" + fileName);
@@ -83,11 +87,11 @@ public class LoadSave {
                     //lay trong khaong ở bound của red(khoảng 45)
                     value = 0;
                 }
-                System.out.printf("%5d", value);
+//                System.out.printf("%5d", value);
 
                 lvlData[j][i] = value;
             }
-            System.out.println("");
+//            System.out.println("");
         }
         return lvlData;
     }

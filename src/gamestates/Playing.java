@@ -10,12 +10,11 @@ import java.awt.image.BufferedImage;
 import entities.EnemyManager;
 import entities.Player;
 import level.LevelManager;
-import level.LevelManager;
 import main.Game;
 import ui.GameOverOverlay;
 import ui.PauseOverlay;
 import utilz.LoadSave;
-import static utilz.Constant.Environment.*;
+
 
 public class Playing extends State implements Statemethods {
     private Player player;
@@ -27,8 +26,8 @@ public class Playing extends State implements Statemethods {
 
     private boolean paused = false;
 
-    private int xLvlOffset;
-    private int leftBorder = (int) (0.2 * Game.GAME_WIDTH);
+    private int xLvlOffset; // add distance to draw the view when player move
+    private int leftBorder = (int) (0.2 * Game.GAME_WIDTH); // the line which player is beyond
     private int rightBorder = (int) (0.8 * Game.GAME_WIDTH);
     private int lvlTilesWide = LoadSave.GetLevelData()[0].length;
     private int maxTilesOffset = lvlTilesWide - Game.TILES_IN_WIDTH;
@@ -65,7 +64,7 @@ public class Playing extends State implements Statemethods {
     private void initClasses() {
         levelManager = new LevelManager(game);
         enemyManager = new EnemyManager(this);
-        player = new Player(200, 200, (int) (64 * Game.SCALE), (int) (40 * Game.SCALE), this);
+        player = new Player(200, 200, (int) (64 * Game.SCALE), (int) (64 * Game.SCALE), this);
         player.loadlvlData(levelManager.getcurrentLevel().getLevelData());
         pauseOverlay = new PauseOverlay(this);
         gameOverOverlay = new GameOverOverlay(this, "Game over");
